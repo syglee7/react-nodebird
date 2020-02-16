@@ -3,6 +3,7 @@ const dummyUser = {
     Post: [],
     Followings: [],
     Followers: [],
+    signUpData: {},
 
 };
 
@@ -11,9 +12,16 @@ export const initialState = {
     user: null,
 };
 
-
+export const SIGN_UP = 'SIGN_UP';
 export const LOG_IN = 'LOG_IN'; // 액션의 이름
 export const LOG_OUT = 'LOG_OUT';
+
+export const signUpAction = (data) => {
+    return {
+        type: SIGN_UP,
+        data: data,
+    };
+};
 
 export const loginAction = (data) => {
     return {
@@ -41,6 +49,13 @@ export default (state = initialState, action) => {
                 isLoggedIn: false,
                 user: null,
             };
+        }
+
+        case SIGN_UP: {
+            return {
+                ...state,
+                signUpData: action.data,
+            }
         }
         default: {
             return {
