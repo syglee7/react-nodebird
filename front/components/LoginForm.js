@@ -14,7 +14,7 @@ const LoginForm = () => {
   const onSubmitForm = useCallback((e) => { // 자식 컴포넌트에 넘기는 함수는 무조건 useCallback
     e.preventDefault();
     dispatch(loginRequestAction({
-      id,
+      userId: id,
       password,
     }));
   }, [id, password]);

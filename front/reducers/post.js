@@ -19,16 +19,6 @@ export const initialState = {
   commentAdded: false,
 };
 
-const dummyPost = {
-  id: 2,
-  User: {
-    id: 1,
-    nickname: 'zena',
-  },
-  content: 'Im dummy',
-  Comments: [],
-};
-
 const dummyContent = {
   id: 1,
   User: {
@@ -85,6 +75,9 @@ export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
 export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 
+export const loadMainPostsRequestAction = {
+  type: LOAD_MAIN_POSTS_REQUEST,
+};
 
 export const addPostRequestAction = (data) => ({
   type: ADD_POST_REQUEST,
@@ -112,7 +105,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isAddingPost: false,
-        mainPosts: [dummyPost, ...state.mainPosts],
+        mainPosts: [action.data, ...state.mainPosts],
         postAdded: true,
       };
     }
@@ -122,6 +115,23 @@ export default (state = initialState, action) => {
         isAddingPost: false,
         addPostErrorReason: action.error,
         postAdded: false,
+      };
+    }
+    case LOAD_MAIN_POSTS_REQUEST: {
+      return {
+        ...state,
+       mainPosts: [],
+      };
+    }
+    case LOAD_MAIN_POSTS_SUCCESS: {
+      return {
+        ...state,
+        mainPosts: action.data,
+      };
+    }
+    case LOAD_MAIN_POSTS_FAILURE: {
+      return {
+        ...state,
       };
     }
     case ADD_COMMENT_REQUEST: {

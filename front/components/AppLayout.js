@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import {
   Menu, Input, Row, Col,
 } from 'antd';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
+import {loadUserRequestAction} from "../reducers/user";
 
 const AppLayout = ({ children }) => {
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+      if (!me) {
+          dispatch(loadUserRequestAction);
+      }
+  }, []);
   return (
     <div>
       <Menu mode="horizontal">
@@ -21,7 +28,7 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {isLoggedIn
+          {me
             ? <UserProfile />
             // 컴포넌트를 분리하는 가장 쉬운 기준은 조건문이나 반복문
             : <LoginForm />}

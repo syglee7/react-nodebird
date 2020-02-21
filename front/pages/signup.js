@@ -49,11 +49,11 @@ const Signup = () => {
     }
 
     dispatch(signUpRequestAction({
-      id,
+      userId: id,
       password,
-      nick,
+      nickname: nick,
     }));
-  }, [password, passwordCheck, term]);
+  }, [id, nick, password, passwordCheck, term]);
 
   /* const onChangeId = (e) => {
         setId(e.target.value);
