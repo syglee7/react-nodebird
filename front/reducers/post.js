@@ -1,15 +1,6 @@
 
 export const initialState = {
-  mainPosts: [{
-    id: 1,
-    User: {
-      id: 1,
-      nickname: 'zena',
-    },
-    content: '첫 번째 게시글',
-    img: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',
-    Comments: [],
-  }], // 화면에 보일 포스트들
+  mainPosts: [], // 화면에 보일 포스트들
   imagePaths: [], // 미리보기 이미지 경로
   addPostErrorReason: false, // 포스트 업로드 실패 사유
   isAddingPost: false, // 포스트 업로드 중
@@ -19,15 +10,6 @@ export const initialState = {
   commentAdded: false,
 };
 
-const dummyContent = {
-  id: 1,
-  User: {
-    id: 1,
-    nickname: 'zena',
-  },
-  createdAt: new Date(),
-  content: '더미 댓글',
-};
 
 export const LOAD_MAIN_POSTS_REQUEST = 'LOAD_MAIN_POSTS_REQUEST';
 export const LOAD_MAIN_POSTS_SUCCESS = 'LOAD_MAIN_POSTS_SUCCESS';
