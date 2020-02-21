@@ -27,6 +27,16 @@ NodeBird.propTypes = {
   store: PropTypes.object.isRequired,
 };
 
+NodeBird.getInitialProps = async (context) => {
+    console.log(context);
+    const { ctx } = context;
+    let pageProps = {};
+    if (context.Component.getInitialProps) {
+        pageProps = await context.Component.getInitialProps(ctx);
+    }
+    return { pageProps };
+};
+
 const configureStore = (initialState, options) => {
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware];
