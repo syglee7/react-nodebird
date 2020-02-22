@@ -86,6 +86,11 @@ export const loadCommentRequestAction = ({data}) => ({
   data,
 });
 
+export const uploadImagesRequestAction = ({data}) => ({
+  type: UPLOAD_IMAGES_REQUEST,
+  data
+});
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_POST_REQUEST: {
@@ -111,6 +116,28 @@ export default (state = initialState, action) => {
         addPostErrorReason: action.error,
         postAdded: false,
       };
+    }
+    case UPLOAD_IMAGES_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case UPLOAD_IMAGES_SUCCESS: {
+      return {
+        ...state,
+        imagePaths: [...state.imagePaths, ...action.data],
+      };
+    }
+    case UPLOAD_IMAGES_FAILURE: {
+      return {
+        ...state,
+      };
+    }
+    case REMOVE_IMAGE: {
+      return {
+        ...state,
+        imagePaths: state.imagePaths.filter((v, i) => i !== action.index),
+      }
     }
     case LOAD_MAIN_POSTS_REQUEST:
     case LOAD_HASHTAG_POSTS_REQUEST:
