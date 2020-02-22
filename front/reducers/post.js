@@ -71,7 +71,15 @@ export const addCommentRequestAction = (data) => ({
   data,
 });
 
+export const loadHashTagPostsRequestAction = ({data}) => ({
+  type: LOAD_HASHTAG_POSTS_REQUEST,
+  data,
+});
 
+export const loadUserPostsRequestAction = ({data}) => ({
+  type: LOAD_USER_POSTS_REQUEST,
+  data,
+});
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -99,19 +107,25 @@ export default (state = initialState, action) => {
         postAdded: false,
       };
     }
-    case LOAD_MAIN_POSTS_REQUEST: {
+    case LOAD_MAIN_POSTS_REQUEST:
+    case LOAD_HASHTAG_POSTS_REQUEST:
+    case LOAD_USER_POSTS_REQUEST: {
       return {
         ...state,
-       mainPosts: [],
+        mainPosts: [],
       };
     }
-    case LOAD_MAIN_POSTS_SUCCESS: {
+    case LOAD_MAIN_POSTS_SUCCESS:
+    case LOAD_HASHTAG_POSTS_SUCCESS:
+    case LOAD_USER_POSTS_SUCCESS: {
       return {
         ...state,
         mainPosts: action.data,
       };
     }
-    case LOAD_MAIN_POSTS_FAILURE: {
+    case LOAD_MAIN_POSTS_FAILURE:
+    case LOAD_HASHTAG_POSTS_FAILURE:
+    case LOAD_USER_POSTS_FAILURE: {
       return {
         ...state,
       };

@@ -18,7 +18,7 @@ app.prepare().then(() => {
     server.use(morgan('dev'));
     server.use(express.json());
     server.use(express.urlencoded({ extended: true }));
-    server.use(cookieParser());
+    server.use(cookieParser(process.env.COOKIE_SECRET));
     server.use(expressSession({
         resave: false,
         saveUninitialized: false,
@@ -26,7 +26,7 @@ app.prepare().then(() => {
         cookie: {
             httpOnly: true,
             secure: false,
-        }
+        },
     }));
 
     server.get('/hashtag/:tag', (req, res) => {

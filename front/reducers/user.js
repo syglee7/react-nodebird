@@ -13,7 +13,7 @@ export const initialState = {
   isSignedUp: false, // 회원가입 성공
   isSigningUp: false, // 회원가입 시도 중
   signUpErrorReason: '', // 회원가입 실패 사유
-  me: null,
+  me: null, // 내 정보
   followingList: [], // 팔로잉 리스트
   followerList: [], // 팔로워 리스트
   userInfo: null, // 남의 정보
@@ -67,9 +67,10 @@ export const loginRequestAction = (data) => ({
   data,
 });
 
-export const loadUserRequestAction = {
+export const loadUserRequestAction = ({data}) => ({
   type: LOAD_USER_REQUEST,
-};
+  data,
+});
 
 export const logoutRequestAction = {
   type: LOG_OUT_REQUEST,
@@ -119,9 +120,15 @@ export default (state = initialState, action) => {
       };
     }
     case LOAD_USER_SUCCESS: {
+      if (action.me) {
+        return {
+          ...state,
+          me: action.data,
+        };
+      }
       return {
         ...state,
-        me: action.data,
+        userInfo: action.data,
       };
     }
     case LOAD_USER_FAILURE: {

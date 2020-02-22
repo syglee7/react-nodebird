@@ -7,14 +7,16 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
-import {loadUserRequestAction} from "../reducers/user";
+import { LOAD_USER_REQUEST } from '../reducers/user';
 
 const AppLayout = ({ children }) => {
   const { me } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   useEffect(() => {
       if (!me) {
-          dispatch(loadUserRequestAction);
+          dispatch({
+              type: LOAD_USER_REQUEST,
+          });
       }
   }, []);
   return (

@@ -51,14 +51,14 @@ const PostCard = ({ post }) => {
               extra={<Button>팔로우</Button>}
             >
               <Card.Meta
-                avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+                avatar={<Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}><a><Avatar>{post.User.nickname[0]}</Avatar></a></Link>}
                 title={post.User.nickname}
                 description={(
                     <div>
                         {post.content.split(/(#[^\s]+)/g).map((v) => {
                             if (v.match(/#[^\s]+/)) {
                                 return (
-                                    <Link href="/hashtag" key={v}><a>{v}</a></Link>
+                                    <Link href={{ pathname: '/hashtag' , query: { tag: v.slice(1)}}} as={`/hashtag/${v.slice(1)}`}  key={v}><a>{v}</a></Link>
                                 );
                             }
                             return v;
@@ -84,7 +84,7 @@ const PostCard = ({ post }) => {
                             <li>
                                 <Comment
                                     author={item.User.nickname}
-                                    avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                                    avatar={<Link href={{ pathname: '/user', query: { id: item.User.User.id } }} as={`/user/${item.User.id}`}><Avatar>{item.User.nickname[0]}</Avatar></Link>}
                                     content={item.content}
                                 />
                             </li>
@@ -101,7 +101,7 @@ PostCard.propTypes = {
     User: PropTypes.object,
     content: PropTypes.string,
     img: PropTypes.string,
-    createdAt: PropTypes.object,
+    createdAt: PropTypes.string,
   }),
 };
 
