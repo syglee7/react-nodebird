@@ -66,7 +66,7 @@ export const addPostRequestAction = (data) => ({
   data,
 });
 
-export const addCommentRequestAction = (data) => ({
+export const addCommentRequestAction = ({data}) => ({
   type: ADD_COMMENT_REQUEST,
   data,
 });
@@ -146,7 +146,7 @@ export default (state = initialState, action) => {
     case ADD_COMMENT_SUCCESS: {
       const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
       const post = state.mainPosts[postIndex];
-      const Comments = [...post.Comments, action.data.content];
+      const Comments = [...post.Comments, action.data.comment];
       const mainPosts = [...state.mainPosts];
       mainPosts[postIndex] = { ...post, Comments };
       return {

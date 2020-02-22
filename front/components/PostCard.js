@@ -27,8 +27,10 @@ const PostCard = ({ post }) => {
             return alert('로그인이 필요합니다');
         }
         return dispatch(addCommentRequestAction({
-            postId: post.id,
-            content: commentText,
+            data: {
+                postId: post.id,
+                content: commentText,
+            },
         }));
     }, [me && me.id, commentText]);
 
@@ -89,7 +91,11 @@ const PostCard = ({ post }) => {
                             <li>
                                 <Comment
                                     author={item.User.nickname}
-                                    avatar={<Link href={{ pathname: '/user', query: { id: item.User.id } }} as={`/user/${item.User.id}`}><Avatar>{item.User.nickname[0]}</Avatar></Link>}
+                                    avatar={(
+                                        <Link href={{ pathname: '/user', query: { id: item.User.id } }} as={`/user/${item.User.id}`}>
+                                            <a><Avatar>{item.User.nickname[0]}</Avatar></a>
+                                        </Link>
+                                    )}
                                     content={item.content}
                                 />
                             </li>
