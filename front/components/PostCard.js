@@ -3,7 +3,7 @@ import {Card, Icon, Button, Avatar, Input, List, Comment, Form} from 'antd';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import {addCommentRequestAction} from "../reducers/post";
+import {addCommentRequestAction, loadCommentRequestAction} from "../reducers/post";
 
 const PostCard = ({ post }) => {
     const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -14,8 +14,12 @@ const PostCard = ({ post }) => {
 
     const onToggleComment = useCallback(() => {
         setCommentFormOpened(prev => !prev);
-
-    }, []);
+        if (!commentFormOpened) {
+            dispatch(loadCommentRequestAction({
+                data: post.id,
+            }));
+        }
+    }, [commentFormOpened]);
 
     const onSubmitComment = useCallback((e) => {
         e.preventDefault();
@@ -24,14 +28,15 @@ const PostCard = ({ post }) => {
         }
         return dispatch(addCommentRequestAction({
             postId: post.id,
+            content: commentText,
         }));
-    }, [me && me.id]);
+    }, [me && me.id, commentText]);
 
     useEffect(() => {
         if (commentAdded) {
             setCommentText('');
         }
-    }, [commentAdded]);
+    }, [commentAdded === true]);
 
     const onChangeCommentText = useCallback((e) => {
         setCommentText(e.target.value);
@@ -84,7 +89,7 @@ const PostCard = ({ post }) => {
                             <li>
                                 <Comment
                                     author={item.User.nickname}
-                                    avatar={<Link href={{ pathname: '/user', query: { id: item.User.User.id } }} as={`/user/${item.User.id}`}><Avatar>{item.User.nickname[0]}</Avatar></Link>}
+                                    avatar={<Link href={{ pathname: '/user', query: { id: item.User.id } }} as={`/user/${item.User.id}`}><Avatar>{item.User.nickname[0]}</Avatar></Link>}
                                     content={item.content}
                                 />
                             </li>

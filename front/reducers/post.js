@@ -81,6 +81,11 @@ export const loadUserPostsRequestAction = ({data}) => ({
   data,
 });
 
+export const loadCommentRequestAction = ({data}) => ({
+  type: LOAD_COMMENTS_REQUEST,
+  data,
+});
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_POST_REQUEST: {
@@ -141,7 +146,7 @@ export default (state = initialState, action) => {
     case ADD_COMMENT_SUCCESS: {
       const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
       const post = state.mainPosts[postIndex];
-      const Comments = [...post.Comments, dummyContent];
+      const Comments = [...post.Comments, action.data.content];
       const mainPosts = [...state.mainPosts];
       mainPosts[postIndex] = { ...post, Comments };
       return {
@@ -157,6 +162,17 @@ export default (state = initialState, action) => {
         isAddingComment: false,
         addCommentErrorReason: action.error,
         commentAdded: false,
+      };
+    }
+    case LOAD_COMMENTS_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
+      const post = state.mainPosts[postIndex];
+      const Comments = action.data.comments;
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = {...post, Comments};
+      return {
+        ...state,
+        mainPosts,
       };
     }
     default: {

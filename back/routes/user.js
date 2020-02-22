@@ -5,6 +5,9 @@ const passport = require('passport');
 const router = express.Router();
 
 router.get('/', (req, res) => { // /api/user/
+    if (!req.user) { // deserializeUser 가 만들어 주는거
+        return res.status(401).send('로그인이 필요합니다.');
+    }
     const user = Object.assign({}, req.user.toJSON());
     delete user.password;
     return res.json(user);
@@ -76,6 +79,7 @@ router.post('/logout', (req, res) => {
 router.post('/login', (req, res, next) => { // POST /api/user/login
     passport.authenticate('local', (err, user, info) => {
         if (err) {
+            console.error(err);
             return next(err);
         }
 
