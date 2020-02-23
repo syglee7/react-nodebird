@@ -28,7 +28,11 @@ import {
   LOAD_FOLLOWINGS_FAILURE,
   LOAD_FOLLOWINGS_REQUEST,
   EDIT_NICKNAME_SUCCESS,
-  EDIT_NICKNAME_FAILURE, EDIT_NICKNAME_REQUEST,
+  EDIT_NICKNAME_FAILURE,
+  EDIT_NICKNAME_REQUEST,
+  REMOVE_FOLLOWER_SUCCESS,
+  REMOVE_FOLLOWER_FAILURE,
+  REMOVE_FOLLOWER_REQUEST,
 } from '../reducers/user';
 
 function logInAPI(loginData) {
@@ -270,20 +274,20 @@ function* removeFollower(action) {
     const result = yield call(removeFollowerAPI, action.data); // call 은 함수 동기적 호출
     //throw new Error('에러에러에러');
     yield put({ // put 은 액션 dispatch 동일
-      type: LOAD_FOLLOWINGS_SUCCESS,
+      type: REMOVE_FOLLOWER_SUCCESS,
       data: result.data,
     });
   } catch (e) { // loginAPI 실패
     console.error(e);
     yield put({
-      type: LOAD_FOLLOWINGS_FAILURE,
+      type: REMOVE_FOLLOWER_FAILURE,
       error: e,
     });
   }
 }
 
 function* watchRemoveFollower() {
-  yield takeEvery(LOAD_FOLLOWINGS_REQUEST, removeFollower);
+  yield takeEvery(REMOVE_FOLLOWER_REQUEST, removeFollower);
 
 }
 

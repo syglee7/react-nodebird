@@ -28,11 +28,9 @@ const Profile = () => {
                 type: LOAD_FOLLOWINGS_REQUEST,
                 data: me.id,
             });
-            dispatch({
-                type: loadUserPostsRequestAction({
+            dispatch(loadUserPostsRequestAction({
                     data: me.id,
-                })
-            });
+            }));
         }
     }, [me && me.id]);
 
