@@ -53,6 +53,7 @@ export const EDIT_NICKNAME_SUCCESS = 'EDIT_NICKNAME_SUCCESS';
 export const EDIT_NICKNAME_FAILURE = 'EDIT_NICKNAME_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
+export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
 export const signUpRequestAction = (data) => ({
   type: SIGN_UP_REQUEST,
@@ -204,6 +205,15 @@ export default (state = initialState, action) => {
         me: {
           ...state.me,
           Posts: [{ id: action.data }, ...state.me.Posts],
+        },
+      }
+    }
+    case REMOVE_POST_OF_ME: {
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          Posts: state.me.Posts.filter(v => v.id !== action.data),
         },
       }
     }

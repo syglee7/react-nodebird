@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Card, Icon, Button, Avatar, Input, List, Comment, Form} from 'antd';
+import {Card, Icon, Button, Avatar, Input, List, Comment, Form, Popover} from 'antd';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     addCommentRequestAction,
     LIKE_POST_REQUEST,
-    loadCommentRequestAction, RETWEET_REQUEST,
+    loadCommentRequestAction, REMOVE_POST_REQUEST, RETWEET_REQUEST,
     UNLIKE_POST_REQUEST
 } from "../reducers/post";
 import PostImages from "./PostImgaes";
@@ -94,6 +94,13 @@ const PostCard = ({ post }) => {
         })
     }, []);
 
+    const onRemovePost = useCallback(postId => () => {
+       dispatch({
+           type: REMOVE_POST_REQUEST,
+           data: postId,
+       })
+    }, []);
+
     return (
         <div>
             <Card
@@ -103,7 +110,23 @@ const PostCard = ({ post }) => {
                 <Icon type="retweet" key="retweet" onClick={onRetweet} />,
                 <Icon type="heart" key="heart"  theme={liked ? 'twoTone' : 'outlined'} twoToneColor="#eb2f96" onClick={onToggleLike}/>,
                 <Icon type="message" key="message" onClick={onToggleComment}/>,
-                <Icon type="ellipsis" key="ellopsis" />,
+                <Popover
+                    key="ellipsis"
+                    content={(
+                        <Button.Group>
+                            {me && post.UserId === me.id
+                                ? (
+                                    <>
+                                        <Button>수정</Button>
+                                        <Button type="danger" onClick={onRemovePost(post.id)}>삭제</Button>
+                                    </>
+                                )
+                                : <Button>신고</Button>}
+                        </Button.Group>
+                    )}
+                >
+                    <Icon type="ellipsis" />
+                </Popover>,
               ]}
               title={post.RetweetId ? `${post.User.nickname} 님이 리트윗 하셨씁니다.` : null}
               extra={!me || post.User.id === me.id

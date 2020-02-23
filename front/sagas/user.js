@@ -146,7 +146,7 @@ function* watchSignUp() {
 
 function followAPI(userId) {
   // 서버에 요청을 보내는 부분
-  return axios.post(`/user/${userId}/follow`,{}, {
+  return axios.post(`/user/${userId || 0}/follow`,{}, {
     withCredentials: true,
   });
 }
@@ -204,7 +204,7 @@ function* watchUnFollow() {
 
 function loadFollowersAPI(userId) {
   // 서버에 요청을 보내는 부분
-  return axios.get(`/user/${userId}/followers`, {
+  return axios.get(`/user/${userId || 0}/followers`, {
     withCredentials: true,
   });
 }
@@ -233,7 +233,7 @@ function* watchLoadFollowers() {
 
 function loadFollowingsAPI(userId) {
   // 서버에 요청을 보내는 부분
-  return axios.get(`/user/${userId}/followings`, {
+  return axios.get(`/user/${userId || 0}/followings`, {
     withCredentials: true,
   });
 }
@@ -263,7 +263,7 @@ function* watchLoadFollowings() {
 
 function removeFollowerAPI(userId) {
   // 서버에 요청을 보내는 부분
-  return axios.delete(`/user/${userId}/follower`, {
+  return axios.delete(`/user/${userId || 0}/follower`, {
     withCredentials: true,
   });
 }

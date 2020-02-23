@@ -9,9 +9,6 @@ const Home = () => {
   const { mainPosts } = useSelector((state) => state.post);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(loadMainPostsRequestAction);
-  }, []);
   return (
     <div>
       {me && <PostForm />}
@@ -23,6 +20,10 @@ const Home = () => {
     </div>
 
   );
+};
+
+Home.getInitialProps = async (context) => {
+  context.store.dispatch(loadMainPostsRequestAction);
 };
 
 export default Home;
