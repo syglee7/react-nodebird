@@ -61,7 +61,7 @@ export const loadMainPostsRequestAction = {
   type: LOAD_MAIN_POSTS_REQUEST,
 };
 
-export const addPostRequestAction = (data) => ({
+export const addPostRequestAction = ({data}) => ({
   type: ADD_POST_REQUEST,
   data,
 });
@@ -91,6 +91,7 @@ export const uploadImagesRequestAction = ({data}) => ({
   data
 });
 
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_POST_REQUEST: {
@@ -107,6 +108,7 @@ export default (state = initialState, action) => {
         isAddingPost: false,
         mainPosts: [action.data, ...state.mainPosts],
         postAdded: true,
+        imagePaths: [],
       };
     }
     case ADD_POST_FAILURE: {
@@ -200,6 +202,48 @@ export default (state = initialState, action) => {
       return {
         ...state,
         mainPosts,
+      };
+    }
+    case LIKE_POST_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case LIKE_POST_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
+      const post = state.mainPosts[postIndex];
+      const Likers = [{ id: action.data.userId }, ...post.Likers];
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = { ...post, Likers };
+      return {
+        ...state,
+        mainPosts,
+      };
+    }
+    case LIKE_POST_FAILURE: {
+      return {
+        ...state,
+      };
+    }
+    case UNLIKE_POST_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case UNLIKE_POST_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
+      const post = state.mainPosts[postIndex];
+      const Likers = post.Likers.filter(v => v.id !== action.data.userId);
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = { ...post, Likers };
+      return {
+        ...state,
+        mainPosts,
+      };
+    }
+    case UNLIKE_POST_FAILURE: {
+      return {
+        ...state,
       };
     }
     default: {

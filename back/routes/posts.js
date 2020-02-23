@@ -9,6 +9,13 @@ router.get('/', async (req, res, next) => { // GET /api/posts
             include: [{
                 model: db.User,
                 attributes: ['id', 'nickname'],
+            }, {
+                model: db.Image,
+            }, {
+                model: db.User,
+                through: 'Like',
+                as: 'Likers',
+                attributes: ['id'],
             }],
             order: [['createdAt', 'DESC']], // 조건이 여러개 가능해서 2차원 배열
         });

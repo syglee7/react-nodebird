@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     db.Post.hasMany(db.Image);
     db.Post.belongsTo(db.Post, { as: 'Retweet' }); // RetweetId 컬럼이 생김
     db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' });
-    db.Post.belongsToMany(db.User, { through: 'Like', as: 'Liker' });
+    db.Post.belongsToMany(db.User, { through: 'Like', as: 'Likers' });
   };
 
   return Post;
