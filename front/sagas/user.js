@@ -19,7 +19,16 @@ import {
   FOLLOW_USER_FAILURE,
   FOLLOW_USER_REQUEST,
   UNFOLLOW_USER_SUCCESS,
-  UNFOLLOW_USER_FAILURE, UNFOLLOW_USER_REQUEST,
+  UNFOLLOW_USER_FAILURE,
+  UNFOLLOW_USER_REQUEST,
+  LOAD_FOLLOWERS_SUCCESS,
+  LOAD_FOLLOWERS_FAILURE,
+  LOAD_FOLLOWERS_REQUEST,
+  LOAD_FOLLOWINGS_SUCCESS,
+  LOAD_FOLLOWINGS_FAILURE,
+  LOAD_FOLLOWINGS_REQUEST,
+  EDIT_NICKNAME_SUCCESS,
+  EDIT_NICKNAME_FAILURE, EDIT_NICKNAME_REQUEST,
 } from '../reducers/user';
 
 function logInAPI(loginData) {
@@ -189,6 +198,124 @@ function* watchUnFollow() {
   yield takeEvery(UNFOLLOW_USER_REQUEST, unFollow);
 }
 
+function loadFollowersAPI(userId) {
+  // 서버에 요청을 보내는 부분
+  return axios.get(`/user/${userId}/followers`, {
+    withCredentials: true,
+  });
+}
+
+function* loadFollowers(action) {
+  try {
+    // yield delay(2000);
+    const result = yield call(loadFollowersAPI, action.data); // call 은 함수 동기적 호출
+    //throw new Error('에러에러에러');
+    yield put({ // put 은 액션 dispatch 동일
+      type: LOAD_FOLLOWERS_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) { // loginAPI 실패
+    console.error(e);
+    yield put({
+      type: LOAD_FOLLOWERS_FAILURE,
+      error: e,
+    });
+  }
+}
+
+function* watchLoadFollowers() {
+  yield takeEvery(LOAD_FOLLOWERS_REQUEST, loadFollowers);
+}
+
+function loadFollowingsAPI(userId) {
+  // 서버에 요청을 보내는 부분
+  return axios.get(`/user/${userId}/followings`, {
+    withCredentials: true,
+  });
+}
+
+function* loadFollowings(action) {
+  try {
+    // yield delay(2000);
+    const result = yield call(loadFollowingsAPI, action.data); // call 은 함수 동기적 호출
+    //throw new Error('에러에러에러');
+    yield put({ // put 은 액션 dispatch 동일
+      type: LOAD_FOLLOWINGS_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) { // loginAPI 실패
+    console.error(e);
+    yield put({
+      type: LOAD_FOLLOWINGS_FAILURE,
+      error: e,
+    });
+  }
+}
+
+function* watchLoadFollowings() {
+  yield takeEvery(LOAD_FOLLOWINGS_REQUEST, loadFollowings);
+
+}
+
+function removeFollowerAPI(userId) {
+  // 서버에 요청을 보내는 부분
+  return axios.delete(`/user/${userId}/follower`, {
+    withCredentials: true,
+  });
+}
+
+function* removeFollower(action) {
+  try {
+    // yield delay(2000);
+    const result = yield call(removeFollowerAPI, action.data); // call 은 함수 동기적 호출
+    //throw new Error('에러에러에러');
+    yield put({ // put 은 액션 dispatch 동일
+      type: LOAD_FOLLOWINGS_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) { // loginAPI 실패
+    console.error(e);
+    yield put({
+      type: LOAD_FOLLOWINGS_FAILURE,
+      error: e,
+    });
+  }
+}
+
+function* watchRemoveFollower() {
+  yield takeEvery(LOAD_FOLLOWINGS_REQUEST, removeFollower);
+
+}
+
+function editNicknameAPI(nickname) {
+  // 서버에 요청을 보내는 부분
+  return axios.patch(`/user/nickname`, {nickname}, {
+    withCredentials: true,
+  });
+}
+
+function* editNickname(action) {
+  try {
+    const result = yield call(editNicknameAPI, action.data); // call 은 함수 동기적 호출
+    yield put({ // put 은 액션 dispatch 동일
+      type: EDIT_NICKNAME_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) { // loginAPI 실패
+    console.error(e);
+    yield put({
+      type: EDIT_NICKNAME_FAILURE,
+      error: e,
+    });
+  }
+}
+
+function* watchEditNickname() {
+  yield takeEvery(EDIT_NICKNAME_REQUEST, editNickname);
+
+}
+
+
 export default function* userSaga() {
   yield all([
     fork(watchLogIn), // fork 는 함수 비동기적 호출
@@ -197,5 +324,9 @@ export default function* userSaga() {
     fork(watchSignUp),
     fork(watchFollow),
     fork(watchUnFollow),
+    fork(watchLoadFollowers),
+    fork(watchLoadFollowings),
+    fork(watchRemoveFollower),
+    fork(watchEditNickname),
   ]);
 }
