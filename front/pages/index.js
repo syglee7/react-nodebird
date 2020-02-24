@@ -1,13 +1,33 @@
-import React, {useEffect} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useCallback, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
-import { loadMainPostsRequestAction } from "../reducers/post";
+import {LOAD_MAIN_POSTS_REQUEST, loadMainPostsRequestAction} from "../reducers/post";
 
 const Home = () => {
   const { me } = useSelector((state) => state.user);
-  const { mainPosts } = useSelector((state) => state.post);
+  const { mainPosts, hasMorePost } = useSelector((state) => state.post);
   const dispatch = useDispatch();
+
+  const onScroll = useCallback(() => {
+    //            현재 위치(윈도우 제일 위 좌표값(스크롤 내린 거리), 윈도우 현재 화명 높이,  문서 전체 길이)
+    //console.log(window.scrollY, document.documentElement.clientHeight, document.documentElement.scrollHeight);
+    if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
+      if (hasMorePost) {
+        dispatch(dispatch({
+          type: LOAD_MAIN_POSTS_REQUEST,
+          lastId: mainPosts[mainPosts.length - 1].id,
+        }));
+      }
+    }
+  }, [hasMorePost, mainPosts.length]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [mainPosts.length]);
 
   return (
     <div>

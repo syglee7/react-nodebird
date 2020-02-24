@@ -202,9 +202,9 @@ function* watchUnFollow() {
   yield takeEvery(UNFOLLOW_USER_REQUEST, unFollow);
 }
 
-function loadFollowersAPI(userId) {
+function loadFollowersAPI(userId, offset = 0, limit = 3) {
   // 서버에 요청을 보내는 부분
-  return axios.get(`/user/${userId || 0}/followers`, {
+  return axios.get(`/user/${userId || 0}/followers?offset=${offset}&limit=${limit}`, {
     withCredentials: true,
   });
 }
@@ -212,7 +212,7 @@ function loadFollowersAPI(userId) {
 function* loadFollowers(action) {
   try {
     // yield delay(2000);
-    const result = yield call(loadFollowersAPI, action.data); // call 은 함수 동기적 호출
+    const result = yield call(loadFollowersAPI, action.data, action.offset); // call 은 함수 동기적 호출
     //throw new Error('에러에러에러');
     yield put({ // put 은 액션 dispatch 동일
       type: LOAD_FOLLOWERS_SUCCESS,
@@ -231,9 +231,9 @@ function* watchLoadFollowers() {
   yield takeEvery(LOAD_FOLLOWERS_REQUEST, loadFollowers);
 }
 
-function loadFollowingsAPI(userId) {
+function loadFollowingsAPI(userId, offset = 0, limit = 3) {
   // 서버에 요청을 보내는 부분
-  return axios.get(`/user/${userId || 0}/followings`, {
+  return axios.get(`/user/${userId || 0}/followings?offset=${offset}&limit=${limit}`, {
     withCredentials: true,
   });
 }
@@ -241,7 +241,7 @@ function loadFollowingsAPI(userId) {
 function* loadFollowings(action) {
   try {
     // yield delay(2000);
-    const result = yield call(loadFollowingsAPI, action.data); // call 은 함수 동기적 호출
+    const result = yield call(loadFollowingsAPI, action.data, action.offset); // call 은 함수 동기적 호출
     //throw new Error('에러에러에러');
     yield put({ // put 은 액션 dispatch 동일
       type: LOAD_FOLLOWINGS_SUCCESS,

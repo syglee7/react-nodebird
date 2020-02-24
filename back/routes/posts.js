@@ -5,7 +5,17 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => { // GET /api/posts
     try {
+        let where = {};
+        if (parseInt(req.query.lastId, 10)) {
+            where = {
+                id: {
+                    // sequelize operator
+                    [db.Sequelize.Op.lt]: parseInt(req.query.lastId, 10), // less than
+                }
+            }
+        }
         const posts = await db.Post.findAll({
+            where,
             include: [{
                 model: db.User,
                 attributes: ['id', 'nickname'],
@@ -27,6 +37,7 @@ router.get('/', async (req, res, next) => { // GET /api/posts
                 }]
             }],
             order: [['createdAt', 'DESC']], // 조건이 여러개 가능해서 2차원 배열
+            limit: parseInt(req.query.limit, 10),
         });
         res.json(posts);
     } catch (e) {
