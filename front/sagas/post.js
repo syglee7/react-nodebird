@@ -30,7 +30,13 @@ import {
   UNLIKE_POST_REQUEST,
   RETWEET_SUCCESS,
   RETWEET_FAILURE,
-  RETWEET_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_REQUEST
+  RETWEET_REQUEST,
+  REMOVE_POST_SUCCESS,
+  REMOVE_POST_FAILURE,
+  REMOVE_POST_REQUEST,
+  LOAD_POST_SUCCESS,
+  LOAD_POST_FAILURE,
+  LOAD_POST_REQUEST
 } from '../reducers/post';
 
 import {ADD_POST_TO_ME, REMOVE_POST_OF_ME} from "../reducers/user";
@@ -328,6 +334,30 @@ function* watchRemovePost() {
   yield takeLatest(REMOVE_POST_REQUEST, removePost);
 }
 
+function loadPostAPI(postId) {
+  return axios.get(`/post/${postId}`);
+}
+
+function* loadPost(action) {
+  try {
+    const result = yield call(loadPostAPI, action.data);
+    yield put({
+      type: LOAD_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: LOAD_POST_FAILURE,
+      error: e,
+    });
+  }
+}
+
+function* watchLoadPost() {
+  yield takeLatest(LOAD_POST_REQUEST, loadPost);
+}
+
+
 
 export default function* postSaga() {
   yield all([
@@ -342,5 +372,6 @@ export default function* postSaga() {
       fork(watchUnLikePost),
       fork(watchRetweet),
       fork(watchRemovePost),
+      fork(watchLoadPost),
   ]);
 }
