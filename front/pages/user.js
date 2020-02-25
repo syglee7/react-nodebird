@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {useSelector} from "react-redux";
 import {loadUserPostsRequestAction} from "../reducers/post";
-import PostCard from "../components/PostCard";
+import PostCard from "../containers/PostCard";
 import {Avatar, Card} from "antd";
 import {loadUserRequestAction} from "../reducers/user";
 
@@ -40,7 +40,7 @@ const User = () => {
                 </Card>)
                 : null}
             {mainPosts.map(c => (
-                <PostCard key={+c.createdAt.valueOf()} post={c} />
+                <PostCard key={c.id} post={c} />
             ))}
         </div>
     );

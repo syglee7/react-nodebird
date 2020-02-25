@@ -1,15 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import {
-  Menu, Input, Row, Col,
-} from 'antd';
+import { Menu, Input, Row, Col } from 'antd';
 import {useSelector} from 'react-redux';
-import LoginForm from './LoginForm';
-import UserProfile from './UserProfile';
+import Router from 'next/router';
+
+import LoginForm from '../containers/LoginForm';
+import UserProfile from '../containers/UserProfile';
 
 const AppLayout = ({ children }) => {
   const { me } = useSelector((state) => state.user);
+
+  const onSearch = (value) => {
+      Router.push({ pathname: '/hashtag', query: { tag: value } }, `/hashtag/${value}`);
+  };
 
   return (
     <div>
@@ -17,7 +21,7 @@ const AppLayout = ({ children }) => {
         <Menu.Item key="home"><Link href="/"><a>노드버드</a></Link></Menu.Item>
         <Menu.Item key="profile"><Link href="/profile"><a>프로필</a></Link></Menu.Item>
         <Menu.Item key="mail">
-          <Input.Search enterButton style={{ verticalAlign: 'middle' }} />
+          <Input.Search enterButton style={{ verticalAlign: 'middle' }} onSearch={onSearch} />
         </Menu.Item>
       </Menu>
       <Row gutter={8}>

@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {
   Button, List, Icon, Card,
 } from 'antd';
-import NicknameEditForm from '../components/NickNameEditForm';
+import NicknameEditForm from '../containers/NicknameEditForm';
 import {
     LOAD_FOLLOWERS_REQUEST,
     LOAD_FOLLOWINGS_REQUEST,
@@ -11,7 +11,7 @@ import {
 } from "../reducers/user";
 import {loadUserPostsRequestAction} from "../reducers/post";
 import { useDispatch, useSelector } from "react-redux";
-import PostCard from "../components/PostCard";
+import PostCard from "../containers/PostCard";
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -83,7 +83,7 @@ const Profile = () => {
         />
           <div>
               {mainPosts.map(c => (
-                  <PostCard key={+c.createdAt} post={c} />
+                  <PostCard key={c.id} post={c} />
               ))}
           </div>
       </div>
