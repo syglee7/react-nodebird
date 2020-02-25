@@ -168,7 +168,7 @@ export default (state = initialState, action) => {
       case ADD_COMMENT_SUCCESS: {
         const postIndex = draft.mainPosts.findIndex(v => v.id === action.data.postId);
         draft.mainPosts[postIndex].Comments.push(action.data.comment);
-        draft.isAddingPost = false;
+        draft.isAddingComment = false;
         draft.commentAdded = true;
         break;
       }
