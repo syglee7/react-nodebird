@@ -16,9 +16,9 @@ const UserProfile = () => {
         <Card
             actions={[
                 // key 는 항상 제일 상위에 있어야 함
-                <Link href="/profile" key="twit"><a><div>짹짹 <br /> {me.Posts.length}</div></a></Link>,
-                <Link href="/profile" key="following"><a><div>팔로잉 <br /> {me.Followings.length}</div></a></Link>,
-                <Link href="/profile" key="follower"><a><div>팔로워 <br /> {me.Followers.length}</div></a></Link>
+                <Link href="/profile" key="twit" prefetch><a><div>짹짹 <br /> {me.Posts.length}</div></a></Link>,
+                <Link href="/profile" key="following" prefetch><a><div>팔로잉 <br /> {me.Followings.length}</div></a></Link>,
+                <Link href="/profile" key="follower" prefetch><a><div>팔로워 <br /> {me.Followers.length}</div></a></Link>
             ]}
         >
             <Card.Meta

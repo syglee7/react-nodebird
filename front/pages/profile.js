@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   Button, List, Icon, Card,
 } from 'antd';
@@ -12,11 +12,20 @@ import {
 import {loadUserPostsRequestAction} from "../reducers/post";
 import { useDispatch, useSelector } from "react-redux";
 import PostCard from "../containers/PostCard";
+import Router from "next/router";
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const { followerList, followingList, hasMoreFollower, hasMoreFollowing } = useSelector(state => state.user);
+    const { me, followerList, followingList, hasMoreFollower, hasMoreFollowing } = useSelector(state => state.user);
     const { mainPosts } = useSelector(state => state.post);
+
+
+    useEffect(() => {
+        if (!me) {
+            alert('메인 페이지로 이동');
+            Router.push('/');
+        }
+    }, []);
 
     const onUnfollow = useCallback(userId => () => {
         dispatch({
