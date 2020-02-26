@@ -13,7 +13,6 @@ const userAPIRouter = require('./routes/user');
 const postAPIRouter = require('./routes/post');
 const postsAPIRouter = require('./routes/posts');
 const hashtagAPIRouter = require('./routes/hashtag');
-const port = process.env.PORT;
 
 const app = express();
 db.sequelize.sync();
@@ -47,6 +46,6 @@ app.use('/api/post', postAPIRouter);
 app.use('/api/posts', postsAPIRouter);
 app.use('/api/hashtag', hashtagAPIRouter);
 
-app.listen(port, () => {
-    console.log(`server is running on localhost:${port}`);
+app.listen(process.env.NODE_ENV === 'production' ? process.env.PORT : 3065, () => {
+    console.log(`server is running on localhost:${process.env.NODE_ENV}`);
 });
