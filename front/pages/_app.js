@@ -36,7 +36,7 @@ const NodeBird = ({ Component, store, pageProps }) => (
               }, {
                   property: 'og:type', content: 'website',
               }, {
-                  property: 'og:image', content: 'http://localhost:3060/favico.ico',
+                  property: 'og:image', content: 'http://zenaislee.site/favico.ico',
               }]}
               link={[{
                   rel: 'shortcut icon', href: '/favicon.ico',
