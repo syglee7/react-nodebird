@@ -1,14 +1,18 @@
 import React, { useCallback } from 'react';
 import Link from 'next/link';
 import { Form, Button, Input } from 'antd';
+import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
 import { useInput } from '../pages/signup';
 import { loginRequestAction } from '../reducers/user';
 
+const LoginError = styled.div`
+    color: red;
+`;
 const LoginForm = () => {
   const [id, onChangeId] = useInput('');
   const [password, onChangePassword] = useInput('');
-  const { isLoggingIn } = useSelector((state) => state.user);
+  const { isLoggingIn, logInErrorReason } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const onSubmitForm = useCallback((e) => { // 자식 컴포넌트에 넘기는 함수는 무조건 useCallback
@@ -31,6 +35,7 @@ const LoginForm = () => {
         <br />
         <Input name="user-password" type="password" value={password} onChange={onChangePassword} required />
       </div>
+      <LoginError>{logInErrorReason}</LoginError>
       <div style={{ marginTop: '10px' }}>
         <Button type="primary" htmlType="submit" loading={isLoggingIn}>로그인</Button>
         <Link href="/signup"><a><Button>회원가입</Button></a></Link>

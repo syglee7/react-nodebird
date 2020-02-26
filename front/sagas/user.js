@@ -53,7 +53,7 @@ function* logIn(action) {
     console.error(e);
     yield put({
       type: LOG_IN_FAILURE,
-      error: e,
+      reason: e.response && e.response.data,
     });
   }
 }
