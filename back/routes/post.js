@@ -4,17 +4,22 @@ const path = require('path');
 const db = require('../models');
 const { isLoggedIn } = require('./middleware');
 const router = express.Router();
+const AWS = require('aws-sdk');
+const multerS3 = require('multer-s3');
+
+AWS.config.update({
+    region: 'ap-northeast-2',
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+});
 
 const upload = multer({
-    storage: multer.diskStorage({
-        destination(req, file, cb) {
-            cb(null, 'uploads');
-        },
-        filename(req, file, cb) {
-            const ext = path.extname(file.originalname); // 확장자 명
-            const basename = path.basename(file.originalname, ext); // 확장자 뺀 메임
-            cb(null, basename + new Date().valueOf() + ext);
-        },
+    storage: multerS3({
+        s3: new AWS.S3(),
+        bucket: 'reactbird',
+        key(req, file, cb) {
+            cb(null, `origin/${+new Date()}${path.basename(file.originalname)}`);
+        }
     }),
     limits: { fileSize: 20 * 1024 * 1024 },
 });
@@ -66,8 +71,7 @@ router.post('/', isLoggedIn,  upload.none(), async (req, res, next) => { // POST
 });
 
 router.post('/images', upload.array('image'), (req, res) => {
-    console.log(req.files);
-    res.json(req.files.map(v => v.filename));
+    res.json(req.files.map(v => v.location));
 });
 
 router.get('/:id', async (req, res, next) => {
