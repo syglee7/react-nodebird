@@ -27,7 +27,7 @@ if (prod) {
     app.use(helmet());
     app.use(morgan('combined'));
     app.use(cors({
-        origin: true,
+        origin: 'http://zenaislee.site',
         credentials: true,
     }));
 } else {
@@ -49,6 +49,7 @@ app.use(expressSession({
     cookie: {
         httpOnly: true,
         secure: false, // https를 쓸 때 true
+        domain: prod && '.zenaislee.site',
     },
     name: 'rnbck',
 }));
