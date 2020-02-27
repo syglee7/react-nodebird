@@ -1,0 +1,16 @@
+{
+  "name": "react-nodebird-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zena",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.627.0",
+    "node": "^10.19.0",
+    "npx": "^10.2.2"
+  }
+}
