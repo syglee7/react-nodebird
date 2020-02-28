@@ -9,8 +9,6 @@
   "author": "zena",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.627.0",
-    "node": "^10.19.0",
-    "npx": "^10.2.2"
+    "aws-sdk": "^2.627.0"
   }
 }
